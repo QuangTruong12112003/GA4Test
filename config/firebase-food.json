@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019247544581",
+    "project_id": "food-mini-app",
+    "storage_bucket": "food-mini-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019247544581:android:02678dccbb4396248a4f6c",
+        "android_client_info": {
+          "package_name": "com.fis.food.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXS4Iwy9nKOvxba0PsDJjgoYMf9PZY1FQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

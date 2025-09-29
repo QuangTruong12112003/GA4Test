@@ -1,6 +1,7 @@
 package com.testga4
 
 import android.app.Application
+import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -10,6 +11,9 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.analytics.FirebaseAnalytics
+import io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -39,5 +43,14 @@ class MainApplication : Application(), ReactApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
+      FirebaseAnalytics.getInstance(this).appInstanceId
+          .addOnSuccessListener(OnSuccessListener { instanceId ->
+              Log.d("GA4", "App Instance ID (client_id): $instanceId")
+          })
+      FirebaseAnalytics.getInstance(this)
+      .getSessionId()
+          .addOnSuccessListener { sessionId ->
+              Log.d("GA4", "Session ID: $sessionId")
+          }
   }
 }

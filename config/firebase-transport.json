@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "228582358959",
+    "project_id": "transport-mini-app",
+    "storage_bucket": "transport-mini-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228582358959:android:ccafae1f0dc3d74238795a",
+        "android_client_info": {
+          "package_name": "com.fis.transport.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp9FtY6on-JCcDy3eCyWquir6Uw41hXUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

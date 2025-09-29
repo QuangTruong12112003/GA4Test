@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901462229513",
+    "project_id": "main-app-ee4a6",
+    "storage_bucket": "main-app-ee4a6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901462229513:android:b7897ece48276999456ed8",
+        "android_client_info": {
+          "package_name": "com.testga4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSG-fhFhBjhcbPD-T3aSEjmeXgL2AmaWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
