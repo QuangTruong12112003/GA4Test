@@ -1,21 +1,30 @@
 import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
-import {firebaseManagerHTTP} from '../services/FirebaseManagerHTTP';
+import {MFXManagerGA} from 'mfx-ga';
 
 export default function FoodScreen() {
+  const ga = new MFXManagerGA(
+    '1:1019247544581:android:02678dccbb4396248a4f6c',
+    'qCTIK0hVRo21pyzPWEfoQA',
+  );
   useEffect(() => {
-    // Chọn context miniApp 'food'
-    firebaseManagerHTTP.setContext('food');
+    const logEvents = async () => {
+      ga.logEvent(
+        'food_ordered',
+        {
+          restaurant_id: 'rest123',
+          menu_item: 'burger',
+          quantity: 2,
+        },
+        {
+          country: {value: 'Vietnam'},
+          city: {value: 'Ho Chi Minh'},
+        },
+      );
+      ga.logScreen('FoodScreen');
+    };
 
-    // Log screen view
-    firebaseManagerHTTP.logScreen('FoodScreen');
-
-    // Log event custom
-    firebaseManagerHTTP.logEvent('food_ordered', {
-      restaurant_id: 'rest123',
-      menu_item: 'burger',
-      quantity: 2,
-    });
+    logEvents();
   }, []);
 
   return (

@@ -1,14 +1,30 @@
 import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
-import {firebaseManager} from '../services/FirebaseManager';
+import {MFXManagerGA} from 'mfx-ga';
 
 export default function TransportScreen() {
+  const ga = new MFXManagerGA(
+    '1:228582358959:android:ccafae1f0dc3d74238795a',
+    'bHKuRHyPSBSGRQKQSHerPA',
+  );
   useEffect(() => {
-    firebaseManager.initMiniApp('transport');
-    firebaseManager.setContext('transport');
-    firebaseManager.logScreen('TransportScreen');
-    firebaseManager.logEvent('screen_view', {screen_name: 'TransportScreen'});
-    firebaseManager.logEvent('ride_booked', {driver_id: 'driver456'});
+    const logEvents = async () => {
+      ga.logEvent(
+        'transport_moved',
+        {
+          restaurant_id: 'rest123',
+          menu_item: 'burger',
+          quantity: 2,
+        },
+        {
+          country: {value: 'Vietnam'},
+          city: {value: 'Ho Chi Minh'},
+        },
+      );
+      ga.logScreen('TransportScreen');
+    };
+
+    logEvents();
   }, []);
 
   return (

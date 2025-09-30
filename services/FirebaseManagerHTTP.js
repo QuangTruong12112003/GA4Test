@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GA4_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
@@ -6,31 +7,35 @@ class FirebaseManagerHTTP {
   constructor() {
     this.contexts = {
       main: {
-        measurementId: 'G-3RHF0K05EL',
+        firebaseAppId: '1:901462229513:android:b7897ece48276999456ed8',
         apiSecret: 'eiPFiaZSTXKcay2jARzqlg',
       },
       food: {
-        measurementId: 'G-78X2F4MGW8',
+        firebaseAppId: '1:1019247544581:android:02678dccbb4396248a4f6c',
         apiSecret: 'qCTIK0hVRo21pyzPWEfoQA',
       },
       transport: {
-        measurementId: 'G-QZPDLD4Q4W',
+        firebaseAppId: '1:228582358959:android:ccafae1f0dc3d74238795a',
         apiSecret: 'bHKuRHyPSBSGRQKQSHerPA',
       },
     };
     this.currentContext = 'main';
-    this.initClientId();
+    this.initAppInstanceId();
   }
 
-  async initClientId() {
-    let clientId = await AsyncStorage.getItem('ga_client_id');
-    if (!clientId) {
-      this.clientId = `${Math.floor(Math.random() * 1000000000)}.${Math.floor(
-        Math.random() * 1000000000,
-      )}`;
-      await AsyncStorage.setItem('ga_client_id', clientId);
+  async initAppInstanceId() {
+    let appInstanceId = await AsyncStorage.getItem('ga_app_instance_id');
+    if (!appInstanceId) {
+      try {
+        appInstanceId = await analytics().getAppInstanceId(); 
+        if (appInstanceId) {
+          await AsyncStorage.setItem('ga_app_instance_id', appInstanceId);
+        }
+      } catch (err) {
+        console.error('Lỗi lấy app_instance_id từ Firebase:', err);
+      }
     }
-    this.clientId = clientId;
+    this.appInstanceId = appInstanceId;
   }
 
   setContext(name) {
@@ -38,22 +43,22 @@ class FirebaseManagerHTTP {
     this.currentContext = name;
   }
 
-  async logEvent(name, params = {}, userId) {
-    if (!this.clientId) await this.initClientId();
-    const {measurementId, apiSecret} = this.contexts[this.currentContext];
+  async logEvent(name, params = {}, userProperties = {}) {
+    if (!this.appInstanceId) await this.initAppInstanceId();
+    const { firebaseAppId, apiSecret } = this.contexts[this.currentContext];
 
     const body = {
-      client_id: this.clientId,
-      user_id: userId || undefined,
-      events: [{name, params}],
+      app_instance_id: this.appInstanceId,
+      user_properties: userProperties,
+      events: [{ name, params }],
     };
 
-    const url = `${GA4_ENDPOINT}?measurement_id=${measurementId}&api_secret=${apiSecret}`;
+    const url = `${GA4_ENDPOINT}?api_secret=${apiSecret}&firebase_app_id=${encodeURIComponent(firebaseAppId)}`;
 
     try {
       await fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
       console.log(`Logged ${name} to ${this.currentContext}`);
@@ -64,8 +69,9 @@ class FirebaseManagerHTTP {
 
   async logScreen(screenName) {
     await this.logEvent('screen_view', {
-      firebase_screen: screenName,
-      firebase_screen_class: screenName,
+      screen_name: screenName,
+      screen_class: screenName,
+      engagement_time_msec: 1000,
     });
   }
 }
