@@ -1,12 +1,18 @@
 import React, {useEffect} from 'react';
 import {View, Text, Button} from 'react-native';
-import {firebaseManager} from '../services/FirebaseManager';
+import {MFXManagerGA} from 'mfx-ga';
 
 export default function HomeScreen({navigation}: any) {
+  const ga = new MFXManagerGA(
+    '1:901462229513:android:b7897ece48276999456ed8',
+    'eiPFiaZSTXKcay2jARzqlg',
+  );
+
   useEffect(() => {
-    firebaseManager.initMiniApp('main');
-    firebaseManager.setContext('main');
-    firebaseManager.logScreen('HomeScreen');
+    const fetchEvent = async () => {
+      await ga.logScreen('MainScreen');
+    };
+    fetchEvent();
   }, []);
 
   return (
@@ -16,9 +22,9 @@ export default function HomeScreen({navigation}: any) {
         <Button
           title="Go to Food"
           onPress={() => {
-            firebaseManager
-              .logEvent('navigate_food', {from: 'HomeScreen'})
-              .catch(err => console.error(err));
+            ga.logEvent('navigate_food', {
+              from: 'HomeScreen',
+            });
             navigation.navigate('Food');
           }}
         />
@@ -27,9 +33,9 @@ export default function HomeScreen({navigation}: any) {
       <Button
         title="Go to Transport"
         onPress={() => {
-          firebaseManager
-            .logEvent('navigate_transport', {from: 'HomeScreen'})
-            .catch(err => console.error(err));
+          ga.logEvent('navigate_transport', {
+            from: 'HomeScreen',
+          });
           navigation.navigate('Transport');
         }}
       />
